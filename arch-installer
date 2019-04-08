@@ -1,6 +1,18 @@
 #!/bin/bash
 # vim:fdm=marker:fmr={,}
 
+manualinstall() { # Installs $1 manually if not installed. Used only for AUR helper here.
+    [ -f "/usr/bin/$1" ] || (
+    cd /tmp || exit
+    rm -rf /tmp/"$1"*
+    curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
+    sudo -u "$name" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
+    cd "$1" &&
+    sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
+    cd /tmp || return) ;
+}
+
+
 # Defaults values {
 
 VER="0.0.1"
@@ -69,7 +81,7 @@ ISO_BASE+="wpa_supplicant lm_sensors lsb-release p7zip pamixer reflector unrar r
 
 # baseline (usually installed in the background)
 BASE_PKGS="base-devel xorg xorg-drivers sudo git pavucontrol"
-WM_BASE_PKGS="arandr archlabs-networkmanager-dmenu nitrogen volumeicon xclip"
+WM_BASE_PKGS="arandr nitrogen volumeicon xclip"
 WM_BASE_PKGS+="compton dunst feh gsimplecal laptop-detect"
 
 SEL=0                                 # currently selected menu item
@@ -138,7 +150,7 @@ declare -A WM_EXT=(
 [plasma]='kdebase-meta'
 [bspwm]='sxhkd archlabs-skel-bspwm rofi archlabs-polybar'
 [fluxbox]='archlabs-skel-fluxbox archlabs-polybar jgmenu rofi lxmenu-data'
-[i3-gaps]='i3status perl-anyevent-i3 archlabs-skel-i3-gaps rofi archlabs-polybar'
+[i3-gaps]='i3status perl-anyevent-i3 rofi polybar'
 [openbox]='obconf archlabs-skel-openbox jgmenu archlabs-polybar tint2 conky rofi lxmenu-data'
 [xfce4]='xfce4-goodies xfce4-pulseaudio-plugin network-manager-applet volumeicon rofi archlabs-skel-xfce4'
 ) # }
@@ -1521,6 +1533,9 @@ install_packages()
 {
 	local rmpkg=""
 	local inpkg="$PACKAGES $USER_PKGS"
+
+        #install aurhelper
+        manualinstall $aurhelper
 
 	if pacman -Qsq 'archlabs-installer' >/dev/null 2>&1; then
 		rmpkg+=" archlabs-installer"
