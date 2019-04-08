@@ -1533,7 +1533,7 @@ install_packages()
 	[[ $KERNEL == 'linux' ]] || { inpkg+=" $KERNEL"; rmpkg+=" linux"; }
 	[[ $inpkg =~ (term|urxvt|tilix|alacritty|sakura|tilda|plasma|cinnamon) || $INSTALL_WMS == *dwm* ]] || inpkg+=" xterm"
 	[[ $MYSHELL == '/usr/bin/zsh' ]] && inpkg+=" zsh-completions"
-	[[ $INSTALL_WMS =~ ^(plasma|gnome|cinnamon)$ ]] || inpkg+=" archlabs-ksuperkey"
+	[[ $INSTALL_WMS =~ ^(plasma|gnome|cinnamon)$ ]] || inpkg+=""
 	[[ $INSTALL_WMS =~ (openbox|bspwm|i3-gaps|dwm|fluxbox) ]] && inpkg+=" $WM_BASE_PKGS"
 
 	chrun "pacman -Syyu --noconfirm"
