@@ -1,0 +1,104 @@
+# Tag, Name, Purpose
+# BASE
+,base-devel,""
+,sudo,""
+,git,""
+#Archlabs programs
+,gtk3,""
+,gvfs,""
+,tumbler
+,playerctl
+,gstreamer
+,libmad
+,libmatroska
+,gst-libav
+,gst-plugins-base
+,gst-plugins-good
+,scrot
+#al wm-base
+A,networkmanager-dmenu-git,"networkmanager"
+,xdg-user-dirs,"tool for managing xdg directories"
+,nitrogen,"wallpaper viewser and setter"
+,polkit-gnome, "application policy tookit"
+,volumeicon,"volumeicon in systemtray"
+,xclip,"CLI for X clipboard"
+,xdotool,"X interaction through commandline"
+,wmctrl,"X interaction through commandline"
+,gsimplecal, "gtk calendar"
+,xfce4-power-manager, ""
+,xfce4-settings, ""
+,laptop-detect, ""
+
+# GUI
+,i3-gaps,"window manager"
+,xorg-server,"graphical server"
+,xorg-xinit,"starts the graphical server"
+,xorg-xbacklight,"enables changing screen brightness levels."
+,compton,"window compositor"
+A,polybar,"wm independent status bar"
+A,betterlockscreen, "lockscreen"
+,dunst,"minimal notification system"
+,arandr,"is a UI for screen adjustment"
+,rofi, "application launcher"
+,perl-anyevent-i3, ""
+
+# GUI Apps
+A,google-chrome,"Proprietary web browser"
+A,discord,"VoIP for gaming"
+A,tor-browser,"For anonymous web browsing"
+,thunar,"GUI filemanager"
+,transmission-gtk,"BitTorrent GUI client"
+,obs-studio,"GUI for recording and streaming"
+# TUI
+,neovim,"an tidier vim with some useful features"
+,elinks,"advanced browser"
+,sxiv,"minimalist image viewer."
+,ffmpeg,"multimedia CLI software suite"
+,ncmpcpp,"a ncurses interface for music with multiple formats and a powerful tag editor."
+,mpd,"lightweight music daemon."
+,mpc,"terminal interface for mpd."
+,mpv,"media player"
+,newsboat,"RSS client."
+,imagemagick,"command line image manimuplator"
+A,sc-im,"is an Excel-like terminal spreadsheet manager."
+A,htop-vim-git,"htop with vi-keybindings"
+,zathura,"pdf-viewer with vi-like keybindings"
+,zathura-djvu,"gives zathura the ability to read .djvu files."
+,zathura-pdf-mupdf,"allows mupdf pdf compatibility in zathura."
+# Theming
+,arc-gtk-theme,"gtk3.0 and 2.0 theme"
+,deepin-icon-theme,"icon theme"
+A,capitaine-cursors,"xcursor theme"
+# Fonts
+,ttf-inconsolata,"monospace font"
+,ttf-linux-libertine,"sans serif fonts"
+,adobe-source-code-pro-fonts, "adobe fonts"
+A,ttf-emojione,"unicode symbols and emojiis"
+A,ttf-symbola,"--||--"
+# Audio
+,alsa-firmware, "firmware for certain soundcars"
+,alsa-lib, "alsa library"
+,alsa-plugins, "alsa plugins"
+,pauvcontrol,"Pulseaudio controller"
+,pulseaudio,"is the audio system (>inb4 bloat)."
+,pulseaudio-alsa,"is an audio interface with ALSA."
+,pulsemixer,"is an intuitive ncurses audio controller."
+# Bluetooth
+blueman
+bluez
+# Utils
+,tree,"tree like directory listing"
+,fzf,"commandline fuzzer"
+,gnome-keyring,"serves as the system keyring."
+,networkmanager,"does exactly what it sounds like."
+,ntfs-3g,"allows accessing NTFS partitions."
+,socat,"multirelay socket cat"
+,unclutter,"hides an inactive mouse"
+,unrar,""
+,unzip,""
+,xorg-xdpyinfo,"Display information utility"
+,youtube-dl,"download any youtube link"
+,poppler,"manipulates .pdfs and gives .pdf previews and other .pdf functions."
+,atool,"manages and gives information about archives."
+A,task-spooler,"queues commands or files for download."
+A,simple-mtpfs,"enables the mounting of cell phones."
