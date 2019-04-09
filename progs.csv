@@ -31,6 +31,8 @@ A,networkmanager-dmenu-git,"networkmanager"
 
 # GUI
 ,i3-gaps,"window manager"
+,mesa, "DRI provider for 3D acceleration."
+,xf86-video-nouveau, "DDX driver providing 2D acceleration in Xorg"
 ,xorg-server,"graphical server"
 ,xorg-xinit,"starts the graphical server"
 ,xorg-xbacklight,"enables changing screen brightness levels."

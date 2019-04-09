@@ -2,7 +2,7 @@
 
 # vim:fdm=marker:fmr={,}
 
-# English translation file { _WelTitle="Welcome to the" _WelBody="\nThis will help you get $DIST setup on your system.\nHaving GNU/Linux experience is an asset, however we try our best to keep things simple.\n\nIf you are unsure about an option, a default will be listed or\nthe first selected option will be the default (excluding language and timezone).\n\n\nMenu Navigation:\n\n - Select items with the arrow keys or the option number.\n - Use [Space] to toggle options and [Enter] to confirm.\n - Switch between buttons using [Tab] or the arrow keys.\n - Use [Page Up] and [Page Down] to jump whole pages\n - Press the highlighted key of an option to select it.\n" 
+# English translation file {
 _PrepBody="\nThis is the menu where you can prepare your system for the install.\n\nTo begin the install you must first have:\n\n  - A root (/) partition mounted (UEFI systems also require a seperate boot partition).\n  - A new user created and the passwords set.\n  - The system configuration finished.\n\nOnce the above requirements are met and you have gone through any optional setup steps you like the install can be started."
 
 _EditBody="\nBefore exiting you can select configuration files to review/change.\n\nIf you need to make other changes with the drives still mounted, use Ctrl-z to pause the installer, when finished type 'fg' and [Enter] or Ctrl-z again to resume the installer, if you want to avoid the automatic reboot using Ctrl-c will cleanly exit."
@@ -112,7 +112,8 @@ USER_PASS="test"          # password for the primary user
 ROOT_PASS="test"          # root password
 
 INSTALL_WMS="i3-gaps"     # space separated list of chosen wm/de
-KERNEL="linux-zen"        # can be linux, linux-lts, linux-zen, or linux-hardened
+# TODO: fix linux-zen, preset files for zen kernel must exist in /etc/mkinitcpio.d/presets/
+KERNEL="linux"        # can be linux, linux-lts, linux-zen, or linux-hardened
 MYSHELL="/usr/bin/bash"   # login shell for root and the primary user
 LOCALE="en_US"
 ZONE="Europe"
@@ -428,6 +429,7 @@ select_config()
     # Check if variables are already configured from before:
     check_config
     if [[ CONFIG_DONE ]]; then
+        infobox "Config" "All config options are already set"
         return 0
     fi
 
@@ -1844,7 +1846,7 @@ install_mkinitcpio()
     [[ $LUKS ]] && add="encrypt"
     [[ $LVM ]] && { [[ $add ]] && add+=" lvm2" || add+="lvm2"; }
     sed -i "s/block filesystems/block ${add} filesystems ${HOOKS}/g" $MNT/etc/mkinitcpio.conf
-    chrun "mkinitcpio -p $KERNEL" 2>$ERR
+    chrun "mkinitcpio -P $KERNEL" 2>$ERR
     errshow 1 "mkinitcpio -p $KERNEL"
 }
 
@@ -2780,3 +2782,4 @@ yesno()
     fi
 }
 
+main
