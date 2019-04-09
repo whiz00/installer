@@ -470,7 +470,8 @@ select_config()
 
 select_mkuser()
 {
-    if [[ $NEWUSER && $USER_PASS && $ROOT_PASS && != "" ]]; then
+    if [[ $NEWUSER && $USER_PASS && $ROOT_PASS != "" ]]; then
+        infobox "User" "User setup already configured"
         return 0
     fi
 
