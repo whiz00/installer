@@ -1537,8 +1537,9 @@ install_base()
         errshow 1 "rsync -ahv /run/archiso/sfs/airootfs/ $MNT/"
     else
         install_mirrorlist
-        pacstrap $MNT base git $KERNEL $UCODE --noconfirm 2>$ERR
-        errshow 1 "pacstrap $MNT base $KERNEL $UCODE --noconfirm"
+        pacstrap $MNT base
+        errshow 1 "pacstrap $MNT base"
+        pacstrap $MNT git $KERNEL $UCODE --noconfirm
     fi
 
     if [[ $VM ]]; then
