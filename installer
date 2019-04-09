@@ -227,6 +227,7 @@ declare -A EDIT_FILES=(
 [bootloader]="/boot/loader/entries/$DIST.conf"
 [locale]="/etc/locale.conf /etc/default/locale"
 [keyboard]="/etc/X11/xorg.conf.d/00-keyboard.conf /etc/default/keyboard"
+[xorg]="/etc/X11/xorg.conf"
 )
 
 # PKG_EXT: if you add a package to $PACKAGES in any dialog
@@ -1696,29 +1697,8 @@ install_login()
             rm -rf $MNT/home/$NEWUSER/.{bash,mksh}* $MNT/home/$NEWUSER/.inputrc $MNT/root/.{bash,mksh}* $MNT/root/.inputrc ;;
     esac
 
-    install_${LOGIN_TYPE:-xinit}
-}
-
-install_xinit()
-{
-    if [[ -e $MNT/home/$NEWUSER/.xinitrc ]] && grep -q 'exec' $MNT/home/$NEWUSER/.xinitrc; then
-        sed -i "/exec/ c exec ${LOGIN_WM}" $MNT/home/$NEWUSER/.xinitrc
-    else
-        printf "exec %s\n" "$LOGIN_WM" >> $MNT/home/$NEWUSER/.xinitrc
-    fi
-
-    [[ ${EDIT_FILES[login]} == *"$LOGINRC"* ]] || EDIT_FILES[login]+=" /home/$NEWUSER/$LOGINRC"
-
     if [[ $AUTOLOGIN == true ]]; then
         sed -i "s/root/${NEWUSER}/g" $SERVICE/autologin.conf
-        cat > $MNT/home/$NEWUSER/$LOGINRC << EOF
-# ~/$LOGINRC
-# sourced by $(basename $MYSHELL) when used as a login shell
-
-# automatically run startx when logging in on tty1
-[[ ! \$DISPLAY && \$XDG_VTNR -eq 1 ]] && exec startx -- vt1
-
-EOF
     else
         rm -rf $SERVICE
         rm -rf $MNT/home/$NEWUSER/.{profile,zprofile,bash_profile}
@@ -1819,8 +1799,8 @@ install_packages()
 
     chrun "pacman -Syyu --noconfirm" 2>/dev/null
     chrun "pacman -Rns $rmpkg --noconfirm" 2>/dev/null
-    manual_install $aurhelper
-    installation_loop
+    chrun manual_install $aurhelper
+    chrun installation_loop
     chrun "pacman -S $inpkg --needed --noconfirm" 2>/dev/null
 
     sed -i "s/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g" $MNT/etc/sudoers
