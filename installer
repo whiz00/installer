@@ -902,7 +902,6 @@ pkg_extra()
     printf "%s" "$pkgs"
 }
 
-
 partition_menu()
 {
     local device choice
