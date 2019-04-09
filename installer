@@ -111,6 +111,7 @@ LOGIN_WM=""               # default login session
 NEWUSER="whiz"            # username for the primary user
 USER_PASS="test"          # password for the primary user
 ROOT_PASS="test"          # root password
+HOSTNAME="evolv"          # system hostname
 
 INSTALL_WMS="i3-gaps"     # space separated list of chosen wm/de
 # TODO: fix linux-zen, preset files for zen kernel must exist in /etc/mkinitcpio.d/presets/
@@ -468,6 +469,10 @@ select_config()
 
 select_mkuser()
 {
+    if [[ $NEWUSER && $USER_PASS && $ROOT_PASS && != "" ]]; then
+        return 0
+    fi
+
     local v="" u="" p="" p2="" rp="" rp2="" err=0
     local l=$((${#_RootBody} + 1))
 
