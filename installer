@@ -83,9 +83,8 @@ _PartErrBody="\nYou need create the partiton(s) first.\n\n\nBIOS systems require
 # }
 
 # Config values {
-progsfile="https://raw.githubusercontent.com/whiz00/installler/master/progs.csv"
 dotfilesrepo="https://github.com/whiz00/dotfiles"
-aurhelper="yay"
+progsfile="https://raw.githubusercontent.com/whiz00/installer/master/progs.csv"
 
 VER="0.0.1"
 DIST="Arch"
@@ -1486,7 +1485,13 @@ install_main()
     printf "Setting ownership of /home/$NEWUSER\n"
     chrun "chown -Rf $NEWUSER:users /home/$NEWUSER"
 
-    manual_install $aurhelper
+    # install yay
+    arch-chroot $MNT /bin/bash <<"EOT"
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    sudo -u "$NEWUSER" makepkg --noconfirm -si >/dev/null 2>&1
+EOT
+makepkg -si
     install_loop
 
     # Adding homefolder:
@@ -1533,7 +1538,7 @@ install_base()
         rsync -ahv /run/archiso/sfs/airootfs/ $MNT/ 2>$ERR
         errshow 1 "rsync -ahv /run/archiso/sfs/airootfs/ $MNT/"
     else
-        pacstrap $MNT base $KERNEL $UCODE $(grep -hv '^#' /usr/share/archlabs/installer/packages.txt) 2>$ERR
+        pacstrap $MNT base git $KERNEL $UCODE $(grep -hv '^#' /usr/share/archlabs/installer/packages.txt) 2>$ERR
         errshow 1 "pacstrap $MNT base $KERNEL $UCODE $(grep -hv '^#' /usr/share/archlabs/installer/packages.txt)"
     fi
 
@@ -1729,8 +1734,6 @@ EOF
 manual_install()
 {
     arch-chroot $MNT /bin/bash <<"EOT"
-    cd /tmp
-    curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz
     sudo -u "NEWUSER" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
     cd "$1" &&
     sudo -u "$NEWUSER" makepkg --noconfirm -si >/dev/null 2>&1
@@ -1756,7 +1759,7 @@ maininstall()
 
 aurinstall()
 {
-    chrun 'sudo -u "$NEWUSER" $aurhelper -S --noconfirm "$1"' 2>/dev/null
+    chrun 'sudo -u "$NEWUSER" yay -S --noconfirm "$1"' 2>/dev/null
 }
 
 install_packages()
