@@ -1532,7 +1532,6 @@ install_base()
         rsync -ahv /run/archiso/sfs/airootfs/ $MNT/ 2>$ERR
         errshow 1 "rsync -ahv /run/archiso/sfs/airootfs/ $MNT/"
     else
-        install_mirrorlist
         pacstrap $MNT base $KERNEL $UCODE $(grep -hv '^#' /usr/share/archlabs/installer/packages.txt) 2>$ERR
         errshow 1 "pacstrap $MNT base $KERNEL $UCODE $(grep -hv '^#' /usr/share/archlabs/installer/packages.txt)"
     fi
@@ -1801,7 +1800,7 @@ install_packages()
     chrun "pacman -Syyu --noconfirm" 2>/dev/null
     chrun "pacman -Rns $rmpkg --noconfirm" 2>/dev/null
     chrun manual_install $aurhelper
-    chrun installation_loop
+    chrun install_loop
     chrun "pacman -S $inpkg --needed --noconfirm" 2>/dev/null
 
     sed -i "s/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g" $MNT/etc/sudoers
@@ -2121,7 +2120,7 @@ lvm_menu()
     case $choice in
         "$_LvmNew") lvm_create || return 1 ;;
         "$_LvmDel")
-            if lvm_show_vg && yesno "$_LvmDelVG" "$_LvmDelQ"; then
+            if lvm_show_vg && yesno "$_LvmDel" "$_LvmDelQ"; then
                 vgremove -f "$DEL_VG" >/dev/null 2>&1
             fi
             lvm_menu
