@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-
 # vim:fdm=marker:fmr={,}
 
 # English translation file {
@@ -431,6 +430,7 @@ check_config()
 select_config()
 {
     select_timezone || return 1
+    select_mirrorcmd || return 1
     # Check if variables are already configured from before:
     check_config
     if [[ CONFIG_DONE ]]; then
@@ -463,7 +463,6 @@ select_config()
         'linux-hardened' 'A security-focused Linux kernel with hardening patches to mitigate kernel and userspace exploits')"
 
     [[ $KERNEL ]] || return 1
-    select_mirrorcmd || return 1
     CONFIG_DONE=true
     return 0
 }
@@ -1471,12 +1470,12 @@ install_main()
 {
     clear
     tput cnorm
+    install_mirrorlist
     install_base
     printf "Generating /etc/fstab:  genfstab -U $MNT >$MNT/etc/fstab\n"
     genfstab -U $MNT >$MNT/etc/fstab 2>$ERR
     errshow 1 "genfstab -U $MNT >$MNT/etc/fstab"
     [[ -f $MNT/swapfile ]] && sed -i "s~${MNT}~~" $MNT/etc/fstab
-    install_mirrorlist
     install_packages
     install_mkinitcpio
     install_boot
@@ -1489,7 +1488,7 @@ install_main()
     sleep 1
 
     # Adding homefolder:
-    putgitrepo "$dotfilesrepo" "/home/$NEWUSER/"
+    putgitrepo "$dotfilesrepo" "$MNT/home/$NEWUSER/"
 
     while true; do
         tput civis
@@ -1734,7 +1733,7 @@ manual_install()
     sudo -u "NEWUSER" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
     cd "$1" &&
     sudo -u "$NEWUSER" makepkg --noconfirm -si >/dev/null 2>&1
-    EOT
+EOT
 }
 
 install_loop()
