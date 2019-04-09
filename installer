@@ -1468,6 +1468,8 @@ install_main()
     clear
     tput cnorm
     install_mirrorlist
+    #refresh package keys
+    pacman --noconfirm -Sy archlinux-keyring
     install_base
     printf "Generating /etc/fstab:  genfstab -U $MNT >$MNT/etc/fstab\n"
     genfstab -U $MNT >$MNT/etc/fstab 2>$ERR
