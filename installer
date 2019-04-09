@@ -1536,14 +1536,10 @@ install_base()
         rsync -ahv /run/archiso/sfs/airootfs/ $MNT/ 2>$ERR
         errshow 1 "rsync -ahv /run/archiso/sfs/airootfs/ $MNT/"
     else
+        install_mirrorlist
         pacstrap $MNT base git $KERNEL $UCODE --noconfirm 2>$ERR
-        errshow 1 "pacstrap $MNT base $KERNEL $UCODE $(grep -hv '^#' /usr/share/archlabs/installer/packages.txt)"
+        errshow 1 "pacstrap $MNT base $KERNEL $UCODE --noconfirm"
     fi
-
-    printf "Removing archiso remains\n"
-    rm -rf $MNT/etc/mkinitcpio-archiso.conf
-    find $MNT/usr/lib/initcpio -name 'archiso*' -type f -exec rm -rf '{}' \;
-    sed -i 's/volatile/auto/g' $MNT/etc/systemd/journald.conf
 
     if [[ $VM ]]; then
         printf "Removing xorg configs in /etc/X11/xorg.conf.d/ to avoid conflict in VMs\n"
