@@ -902,6 +902,7 @@ pkg_extra()
     printf "%s" "$pkgs"
 }
 
+
 partition_menu()
 {
     local device choice
@@ -915,46 +916,58 @@ partition_menu()
     fi
 
     tput civis
-    choice="$(menubox "Edit Partitions" "$_PartBody" \
-        "auto partition" "Full device automatic partitioning" \
-        "cfdisk" "Curses front end to fdisk" \
-        "done" "return to the main menu")"
+    if [[ $DISPLAY && $TERM != 'linux' ]] && hash gparted >/dev/null 2>&1; then
+        choice="$(menubox "Edit Partitions" "$_PartBody" \
+            "view partition table" "Shows output from the lsblk command" \
+            "auto partition" "Full device automatic partitioning" \
+            "gparted" "GUI front end to parted" \
+            "cfdisk" "Curses front end to fdisk" \
+            "parted" "GNU partition editor" \
+            "secure wipe" "Wipe data before disposal or sale of a device" \
+            "done" "return to the main menu")"
 
-    case $choise in
-        "auto partition") auto_partition_drives $device ;;
-        "cfdisk") cfdisk "$device" ;;
-        "done") return 0 ;;
-    esac
-
-}
-
-auto_partition_drives()
-{
-    local device=$1 choice=$2 root_size msg table boot_fs ret
-
-    root_size=$(lsblk -lno SIZE "$device" | awk 'NR == 1 {
-        if ($1 ~ "G") {
-            sub(/G/, ""); print ($1 * 1000 - 512) / 1000 "G"
-        }
-        else {
-            sub(/M/, ""); print ($1 - 512) "M"
-        }
-    }')
-
-    local phrase="will be destroyed in order to create a (512M) boot partition and an ext4 using all remaining space."
-    if [[ $SYS == 'BIOS' ]]; then
-        msg="$(sed 's|vfat/fat32|ext4|' <<< "$phrase")"
-        table="msdos"
-        boot_fs="ext4"
     else
-        msg="$phrase"
-        table="gpt"
-        boot_fs="fat32"
+        choice="$(menubox "Edit Partitions" "$_PartBody" \
+            "view partition table" "Shows output from the lsblk command" \
+            "auto partition" "Full device automatic partitioning" \
+            "cfdisk" "Curses front end to fdisk" \
+            "parted" "GNU partition editor" \
+            "secure wipe" "Wipe data before disposal or sale of the device" \
+            "done" "return to the main menu")"
+
     fi
 
-    if yesno "Auto Partition" "WARNING: ALL data on $device $msg ($root_size)\nDo you want to continue?"; then
-        auto_partition "$device" "$table" "$boot_fs" "$root_size" && return 0 || return 1
+    tput civis
+    if [[ $choice == "done" || $choice == "" ]]; then
+        return 0
+    elif [[ $choice == "view partition table" ]]; then
+        msgbox "Partition Table" "\n\n$(lsblk -o NAME,MODEL,SIZE,TYPE,FSTYPE,MOUNTPOINT "$device")\n\n"
+    elif [[ $choice == "secure wipe" ]]; then
+        yesno "Wipe Partition" "\nWARNING: ALL data on $device $_PartWipeBody" && wipe -Ifrev $device
+    elif [[ $choice == "auto partition" ]]; then
+        local root_size msg ret table boot_fs
+        root_size=$(lsblk -lno SIZE "$device" | awk 'NR == 1 {
+            if ($1 ~ "G") {
+                sub(/G/, ""); print ($1 * 1000 - 512) / 1000 "G"
+            } else {
+                sub(/M/, ""); print ($1 - 512) "M"
+            }
+        }')
+
+        if [[ $SYS == 'BIOS' ]]; then
+            msg="$(sed 's|vfat/fat32|ext4|' <<< "$_PartBody2")"; table="msdos"; boot_fs="ext4"
+        else
+            msg="$_PartBody2"; table="gpt"; boot_fs="fat32"
+        fi
+
+        if yesno "Auto Partition" "\nWARNING: ALL data on $device $msg ($root_size)$_PartBody3"; then
+            auto_partition "$device" "$table" "$boot_fs" "$root_size" && return 0 || return 1
+        fi
+    else
+        clear; tput cnorm; $choice "$device"
     fi
+
+    part_menu "$device"
 }
 
 format_as()
