@@ -28,7 +28,6 @@ A,networkmanager-dmenu-git,"networkmanager"
 ,xfce4-power-manager, ""
 ,xfce4-settings, ""
 ,laptop-detect, ""
-
 # GUI
 ,i3-gaps,"window manager"
 ,mesa, "DRI provider for 3D acceleration."
@@ -44,7 +43,6 @@ A,betterlockscreen, "lockscreen"
 ,arandr,"is a UI for screen adjustment"
 ,rofi, "application launcher"
 ,perl-anyevent-i3, ""
-
 # GUI Apps
 A,google-chrome,"Proprietary web browser"
 A,discord,"VoIP for gaming"

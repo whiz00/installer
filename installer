@@ -1456,8 +1456,6 @@ select_boot_partition()
 
 putgitrepo()
 {
-    # Downlods a gitrepo $1 and places the files in $2 only overwriting conflicts
-    dialog --infobox "Downloading and installing config files..." 4 60
     dir=$(mktemp -d)
     [ ! -d "$2" ] && mkdir -p "$2" && chown -R "$NEWUSER:wheel" "$2"
     chown -R "$NEWUSER:wheel" "$dir"
