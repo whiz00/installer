@@ -82,6 +82,7 @@ _ErrTitle="Installation Error"
 _ExtErrBody="\nCannot mount partition due to a problem with the mountpoint.\n\nEnsure it begins with a slash (/) followed by atleast one character.\n"
 _PartErrBody="\nYou need create the partiton(s) first.\n\n\nBIOS systems require at least one partition (ROOT).\n\nUEFI systems require at least two (ROOT and EFI).\n"
 # }
+
 # Config values {
 progsfile="https://raw.githubusercontent.com/whiz00/installler/master/progs.csv"
 dotfilesrepo="https://github.com/whiz00/dotfiles"
@@ -137,6 +138,7 @@ LVM=""                    # empty when not using lvm
 VGROUP_MB=0               # available space in volume group
 LVM_PARTS=()              # partitions used for volume group
 # }
+
 # Variable container {
 SEP_BOOT=false            # separate boot partition for BIOS
 # TODO: check pupose if LOGIN_TYPE exists
@@ -416,7 +418,8 @@ select_login()
     fi
 }
 
-check_config(){
+check_config()
+{
     if [[ $MYSHELL && $LOGINRC && $HOSTNAME && $LOCALE && $KERNEL != "" ]]; then
         CONFIG_DONE=true
     fi
@@ -918,7 +921,7 @@ partition_menu()
         "done" "return to the main menu")"
 
     case $choise in
-        "auto partition") auto_partition_drives $device $choice ;;
+        "auto partition") auto_partition_drives $device ;;
         "cfdisk") cfdisk "$device" ;;
         "done") return 0 ;;
     esac
@@ -927,7 +930,7 @@ partition_menu()
 
 auto_partition_drives()
 {
-    local device=$1 choice=$2 root_size msg table boot_fs
+    local device=$1 choice=$2 root_size msg table boot_fs ret
 
     root_size=$(lsblk -lno SIZE "$device" | awk 'NR == 1 {
         if ($1 ~ "G") {
@@ -1194,10 +1197,6 @@ setup_boot_device()
     return 0
 }
 
-##################
-# mounting menus #
-##################
-
 mount_menu()
 {
     lvm_detect
@@ -1438,9 +1437,9 @@ select_boot_partition()
     return 0
 }
 
-###############################################################################
-# installation
-putgitrepo() { # Downlods a gitrepo $1 and places the files in $2 only overwriting conflicts
+putgitrepo()
+{
+    # Downlods a gitrepo $1 and places the files in $2 only overwriting conflicts
     dialog --infobox "Downloading and installing config files..." 4 60
     dir=$(mktemp -d)
     [ ! -d "$2" ] && mkdir -p "$2" && chown -R "$name:wheel" "$2"
@@ -1729,7 +1728,8 @@ position=30%,end 50%,end
 EOF
 }
 
-manualinstall() {
+manualinstall()
+{
     [ -f "/usr/bin/$1" ] || (
     cd /tmp || exit
     rm -rf /tmp/"$1"*
@@ -1740,7 +1740,8 @@ manualinstall() {
             cd /tmp || return) ;
 }
 
-install_loop() {
+install_loop()
+{
     ([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
     total=$(wc -l < /tmp/progs.csv)
     aurinstalled=$(pacman -Qm | awk '{print $1}')
@@ -1756,17 +1757,20 @@ install_loop() {
     done < /tmp/progs.csv ;
 }
 
-maininstall() {
+maininstall()
+{
     inpkg+="$1"
 }
 
-aurinstall() {
+aurinstall()
+{
     dialog --title "$BT" --infobox "Installing \`$1\` ($n of $total) from the AUR. $1 $2" 5 70
     echo "$aurinstalled" | grep "^$1$" >/dev/null 2>&1 && return
     sudo -u "$name" $aurhelper -S --noconfirm "$1" >/dev/null 2>&1
 }
 
-pipinstall() {
+pipinstall()
+{
     dialog --title "$BT" --infobox "Installing the Python package \`$1\` ($n of $total). $1 $2" 5 70
     command -v pip || pacman -S --noconfirm --needed python-pip >/dev/null 2>&1
     yes | pip install "$1"
@@ -1850,9 +1854,6 @@ install_mkinitcpio()
     errshow 1 "mkinitcpio -p $KERNEL"
 }
 
-###############################################################################
-# bootloader setup
-
 install_boot()
 {
     if [[ $ROOT_PART == */dev/mapper* ]]; then
@@ -1908,7 +1909,6 @@ install_boot()
 
     return 0
 }
-
 
 setup_grub()
 {
@@ -2106,9 +2106,6 @@ EOF
     systemd-machine-id-setup --root="$MNT"
     return 0
 }
-
-###############################################################################
-# lvm functions
 
 lvm_menu()
 {
@@ -2503,10 +2500,6 @@ luks_keyfile()
     return 0
 }
 
-###################
-# helper functions#
-###################
-
 ofn()
 {
     [[ $USER_PKGS == *"$1"* ]] && printf "on" || printf "off"
@@ -2717,7 +2710,6 @@ umount_dir()
     return 0
 }
 
-# Ncurses helper functions
 msgbox()
 {
     tput civis
