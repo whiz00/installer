@@ -1469,6 +1469,7 @@ install_main()
     tput cnorm
     install_mirrorlist
     #refresh package keys
+    pacman -Syyu --noconfirm
     pacman --noconfirm -Sy archlinux-keyring
     install_base
     printf "Generating /etc/fstab:  genfstab -U $MNT >$MNT/etc/fstab\n"
