@@ -1487,9 +1487,9 @@ install_main()
     arch-chroot $MNT /bin/bash <<"EOT"
     git clone https://aur.archlinux.org/yay.git
     cd yay
-    sudo -u "$NEWUSER" makepkg --noconfirm -si >/dev/null 2>&1
+    makepkg --noconfirm -si >/dev/null 2>&1
 EOT
-makepkg -si
+
     install_loop
 
     # Adding homefolder:
@@ -1740,7 +1740,7 @@ EOT
 
 install_loop()
 {
-    ([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
+    curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
     while IFS=, read -r tag program comment; do
         case "$tag" in
             "") maininstall "$program" "$comment" ;;
