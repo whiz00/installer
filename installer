@@ -1536,7 +1536,7 @@ install_base()
         rsync -ahv /run/archiso/sfs/airootfs/ $MNT/ 2>$ERR
         errshow 1 "rsync -ahv /run/archiso/sfs/airootfs/ $MNT/"
     else
-        pacstrap $MNT base git $KERNEL $UCODE $(grep -hv '^#' /usr/share/archlabs/installer/packages.txt) 2>$ERR
+        pacstrap $MNT base git $KERNEL $UCODE --noconfirm 2>$ERR
         errshow 1 "pacstrap $MNT base $KERNEL $UCODE $(grep -hv '^#' /usr/share/archlabs/installer/packages.txt)"
     fi
 
