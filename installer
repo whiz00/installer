@@ -4,17 +4,6 @@
 
 # English translation file { _WelTitle="Welcome to the" _WelBody="\nThis will help you get $DIST setup on your system.\nHaving GNU/Linux experience is an asset, however we try our best to keep things simple.\n\nIf you are unsure about an option, a default will be listed or\nthe first selected option will be the default (excluding language and timezone).\n\n\nMenu Navigation:\n\n - Select items with the arrow keys or the option number.\n - Use [Space] to toggle options and [Enter] to confirm.\n - Switch between buttons using [Tab] or the arrow keys.\n - Use [Page Up] and [Page Down] to jump whole pages\n - Press the highlighted key of an option to select it.\n" 
 _PrepBody="\nThis is the menu where you can prepare your system for the install.\n\nTo begin the install you must first have:\n\n  - A root (/) partition mounted (UEFI systems also require a seperate boot partition).\n  - A new user created and the passwords set.\n  - The system configuration finished.\n\nOnce the above requirements are met and you have gone through any optional setup steps you like the install can be started."
-_PrepShow="Show lsblk output (optional)"
-_PrepPart="Edit partitions (optional)"
-_PrepLUKS="LUKS encryption (optional)"
-_PrepLVM="Logical volume management (optional)"
-_PrepMnt="Mount and format partitions"
-_PrepUser="Create user and set password"
-_PrepConf="Configure system settings"
-_PrepWM="Select window manager or desktop (optional)"
-_PrepPkg="Select additional packages (optional)"
-_PrepChk="Check configuration choices (optional)"
-_Install="Start the installation"
 
 _EditBody="\nBefore exiting you can select configuration files to review/change.\n\nIf you need to make other changes with the drives still mounted, use Ctrl-z to pause the installer, when finished type 'fg' and [Enter] or Ctrl-z again to resume the installer, if you want to avoid the automatic reboot using Ctrl-c will cleanly exit."
 
@@ -35,34 +24,19 @@ _LocaleBody="\nLocale determines the system language and currency formats.\n\nTh
 
 _CMapBody="\nSelect console keymap, the console is the tty shell you reach before starting a graphical environment (usually Xorg).\n\nIts keymap is seperate from the one used by the graphical environments, though many do use the same such as 'us' English.\n\nSystem default: us"
 
-_HostNameBody="\nEnter a hostname for the new system.\n\nA hostname is used to identify systems on the network.\n\nIt's restricted to alphanumeric characters (a-z, A-Z, 0-9).\nIt can contain hyphens (-) BUT NOT at the beggining or end."
-
 _RootBody="--- Enter root password (empty uses the password entered above) ---"
 _UserBody="\nEnter a name and password for the new user account.\n\nThe name must not use capital letters, contain any periods (.), end with a hyphen (-), or include any colons (:)\n\nNOTE: Use the [Up] and [Down] arrows to switch between input fields, [Tab] to toggle between input fields and the buttons, and [Enter] to accept."
 
 _MntBody="\nUse [Space] to toggle mount options from below, press [Enter] when done to confirm selection.\n\nNot selecting any and confirming will run an automatic mount."
-_WarnMount="\nIMPORTANT: Please choose carefully during mounting and formatting.\n\nPartitions can be mounted without formatting by selecting skip during mounting, useful for extra or already formatted partitions.\n\nThe exception to this is the root (/) partition, it needs to be formatted before install to ensure system stability.\n"
 
-_DevSelBody="\nSelect a device to use from the list below.\n\nDevices (/dev) are the available drives on the system. /sda, /sdb, /sdc ..."
-
-_ExtPartBody="\nYou can now select additional partitions you want mounted, once choosen you will be asked to enter a mountpoint.\n\nSelect 'done' to finish the mounting step and return to the main menu."
-_ExtPartBody1="\nWhere do you want the partition mounted?\n\nEnsure the name begins with a slash (/).\nExamples include: /usr, /home, /var, etc."
 
 _PartBody="\nFull device auto partitioning is available for beginners otherwise cfdisk is recommended.\n\n  - All systems will require a root partition (8G or greater).\n  - UEFI and BIOS using LUKS without LVM will require a boot partition (100-512M)."
 
-_PartBody1="\nWARNING: ALL data on"
-_PartBody2="will be destroyed and the following partitions will be created\n\n- A vfat/fat32 boot partition with boot flags enabled (512M)\n- An ext4 partition using all remaining space"
-_PartBody3="\n\nDo you want to continue?\n"
-_PartWipeBody="will be destroyed using 'wipe -Ifre'.\n\nThis is ONLY intended for use on devices before sale or disposal to reliably destroy the data beyond recovery. This is NOT for devices you intend to continue using.\nThe wiping process can take a long time depending on the size and speed of the drive.\n\nDo you still want to continue?\n"
 
-_SelRootBody="\nSelect the root (/) partition, this is where $DIST will be installed."
 _SelUefiBody="\nSelect the EFI boot partition (/boot), required for UEFI boot.\n\nIt's usually the first partition on the device, 100-512M, and will be formatted as vfat/fat32 if not already."
 _SelBiosBody="\nDo you want to use a separate boot partition? (optional)\n\nIt's usually the first partition on the device, 100-512M, and will be formatted as ext3/4 if not already."
 _SelBiosLuksBody="\nSelect the boot partition (/boot), required for LUKS.\n\nIt's usually the first partition on the device, 100-512M, and will be formatted as ext3/4 if not already."
 _FormBootBody="is already formatted correctly.\n\nFor a clean install, previously existing partitions should be reformatted, however this removes ALL data (bootloaders) on the partition so choose carefully.\n\nDo you want to reformat the partition?\n"
-
-_SelSwpErr="\nSwap Setup Error: Must be 1(M|G) or greater, and can only contain whole numbers\n\nSize Entered:"
-_SelSwpSize="\nEnter the size of the swapfile in megabytes (M) or gigabytes (G).\n\neg. 100M will create a 100 megabyte swapfile, while 10G will create a 10 gigabyte swapfile.\n\nFor ease of use and as an example it is filled in to match the size of your system memory (RAM).\n\nMust be greater than 1, contain only whole numbers, and end with either M or G."
 
 # LUKS / DM-Crypt / Encryption
 _LuksMenuBody="\nDevices and volumes encrypted using dm_crypt cannot be accessed or seen without first being unlocked."
@@ -89,14 +63,12 @@ _LvmNameVgBody="\nEnter the name of the volume group (VG) to create.\n\nThe VG i
 _LvmPvSelBody="\nSelect the partition(s) to use for the physical volume (PV)."
 _LvmPvConfBody1="\nConfirm creation of volume group:"
 _LvmPvConfBody2="with the following partition(s):"
-_LvmPvActBody1="\nCreating and activating volume group:"
 _LvmLvNumBody1="\nSelect the number of logical volumes (LVs) to create in:"
 _LvmLvNumBody2="\nThe last (or only) logical volume will automatically use all remaining space in the volume group."
 _LvmLvNameBody1="\nEnter the name of the logical volume (LV) to create.\n\nThis is like setting a name or label for a partition.\n"
 _LvmLvNameBody2="\nNOTE: This LV will use up all remaining space in the volume group"
 _LvmLvSizeBody1="remaining"
 _LvmLvSizeBody2="\nEnter the size of the logical volume (LV) in megabytes (M) or gigabytes (G). For example, 100M will create a 100 megabyte LV. 10G will create a 10 gigabyte LV.\n"
-_LvmCompBody="\nDone! all logical volumes have been created for the volume group.\n\nDo you want to view the device tree for the new LVM scheme?\n"
 _LvmDelQ="\nConfirm deletion of volume group(s) and logical volume(s).\n\nDeleting a volume group, will delete all logical volumes within as well.\n"
 _LvmSelVGBody="\nSelect volume group to delete.\n\nAll logical volumes within will also be deleted."
 
@@ -304,9 +276,6 @@ declare -A FS_OPTS=(
 
 main()
 {
-    for arg in "$@"; do
-        [[ $arg =~ (--debug|-d) ]] && debug
-    done
 
     check_system
     identify_system
@@ -431,7 +400,7 @@ select_login()
         if [[ $WM_NUM -eq 1 ]]; then
             LOGIN_WM="${WM_SESSIONS[$INSTALL_WMS]}"
         else
-            LOGIN_WM="$(menubox "Login Management" "$_WMLoginBody" $LOGIN_CHOICES)" || return 1
+            LOGIN_WM="$(menubox "Login Management" "$_WMLoginBody" "$LOGIN_CHOICES")" || return 1
             LOGIN_WM="${WM_SESSIONS[$LOGIN_WM]}"
         fi
 
@@ -447,8 +416,8 @@ select_login()
 }
 
 check_config(){
-    if [[ MYSHELL && LOGINRC && HOSTNAME && LOCALE && KERNEL != "" ]]; then
-        return 1
+    if [[ $MYSHELL && $LOGINRC && $HOSTNAME && $LOCALE && $KERNEL != "" ]]; then
+        CONFIG_DONE=true
     fi
     return 0
 }
@@ -457,8 +426,8 @@ select_config()
 {
     select_timezone || return 1
     # Check if variables are already configured from before:
-    if [[ check_config ]]; then
-        CONFIG_DONE=true
+    check_config
+    if [[ CONFIG_DONE ]]; then
         return 0
     fi
 
@@ -586,15 +555,16 @@ select_keymap()
 }
 
 check_timezone(){
-    if [[ ZONE && SUBZONE != "" ]]; then
-        return 1
+    if [[ $ZONE && $SUBZONE != "" ]]; then
+        TZ_DONE=true
     fi
 }
 
 select_timezone()
 {
     # Skips if timezone is already configured
-    if [[ check_timezone ]]; then
+    check_timezone
+    if [[ TZ_DONE ]]; then
         return 0
     fi
 
@@ -671,7 +641,7 @@ select_packages()
         tput civis
         cur=$(dialog --cr-wrap --stdout --backtitle "$BT" \
             --title " Packages " --default-item $cur \
-            --menu "$_PackageMenu" 0 0 0 \
+            --menu "Lorem Ipsum" 0 0 0 \
             1 "Web Browsers" \
             2 "Text Editors" \
             3 "File Managers" \
@@ -955,7 +925,7 @@ partition_menu()
 
 auto_partition_drives()
 {
-    local device=$1 choice=$2 root_size msg ret table boot_fs
+    local device=$1 choice=$2 root_size msg table boot_fs
 
     root_size=$(lsblk -lno SIZE "$device" | awk 'NR == 1 {
         if ($1 ~ "G") {
@@ -968,7 +938,7 @@ auto_partition_drives()
 
     local phrase="will be destroyed in order to create a (512M) boot partition and an ext4 using all remaining space."
     if [[ $SYS == 'BIOS' ]]; then
-        msg="$(sed 's|vfat/fat32|ext4|' <<< "$phrase"
+        msg="$(sed 's|vfat/fat32|ext4|' <<< "$phrase")"
         table="msdos"
         boot_fs="ext4"
     else
@@ -1288,8 +1258,8 @@ mount_menu()
         tput cnorm
         local i=0
         while ! [[ ${SWAP_SIZE:0:1} =~ [1-9] && ${SWAP_SIZE: -1} =~ (M|G) ]]; do
-            $select_msg="\nEnter swap size by appending either M for megabytes or G for gigabytes. E.g 100M\n"
-            $error_msg="\nSwap must be 1(M|G) or greater containing only whole numbers\n"
+            select_msg="\nEnter swap size by appending either M for megabytes or G for gigabytes. E.g 100M\n"
+            error_msg="\nSwap must be 1(M|G) or greater containing only whole numbers\n"
             (( i > 0 )) && msgbox "Swap Setup Error" "$error_msg\nSize Entered:$SWAP_SIZE\n"
             if ! SWAP_SIZE="$(getinput "Swap Setup" "$select_msg" "$SYS_MEM")"; then
                 SWAP_PART=""; SWAP_SIZE=""; break;
@@ -1356,7 +1326,7 @@ select_mountpoint()
     local err=0
     tput cnorm
     while true; do
-        EXMNT="$(getinput "Extra Mount $part" "$_ExtPartBody1" "/" nolimit)"
+        EXMNT="$(getinput "Extra Mount $part" "Assign mountpoint." "/" nolimit)"
         err=$?
         (( err == 0 )) || break
         if [[ ${EXMNT:0:1} != "/" || ${#EXMNT} -le 1 || $EXMNT =~ \ |\' || $EXMNTS == *"$EXMNT"* ]]; then
@@ -2153,13 +2123,13 @@ lvm_menu()
 
     case $choice in
         "$_LvmNew") lvm_create || return 1 ;;
-        "$_LvmDelVG")
+        "$_LvmDel")
             if lvm_show_vg && yesno "$_LvmDelVG" "$_LvmDelQ"; then
                 vgremove -f "$DEL_VG" >/dev/null 2>&1
             fi
             lvm_menu
             ;;
-        "$_LvMDelAll") lvm_del_all ;;
+        "$_LvmDelAll") lvm_del_all ;;
     esac
 
     return 0
@@ -2437,7 +2407,7 @@ luks_pass()
         err=$?
         (( err == 0 )) || break
 
-        if [[ $onlypass ]]; then
+        if [[ $op ]]; then
             p="$(awk -F';:~:;' '{print $1}' <<< "$v")"
             p2="$(awk -F';:~:;' '{print $2}' <<< "$v")"
         else
