@@ -1469,7 +1469,6 @@ install_main()
     tput cnorm
     install_mirrorlist
     #refresh package keys
-    pacman -Syyu --noconfirm
     pacman --noconfirm -Sy archlinux-keyring
     install_base
     printf "Generating /etc/fstab:  genfstab -U $MNT >$MNT/etc/fstab\n"
@@ -1539,10 +1538,7 @@ install_base()
         rsync -ahv /run/archiso/sfs/airootfs/ $MNT/ 2>$ERR
         errshow 1 "rsync -ahv /run/archiso/sfs/airootfs/ $MNT/"
     else
-        install_mirrorlist
-        pacstrap $MNT base
-        errshow 1 "pacstrap $MNT base"
-        pacstrap $MNT git $KERNEL $UCODE --noconfirm
+        pacstrap $MNT base git $KERNEL $UCODE --noconfirm
     fi
 
     if [[ $VM ]]; then

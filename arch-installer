@@ -2,7 +2,7 @@
 # vim:fdm=marker:fmr={,}
 
 # Defaults values {
-progsfile="lttps://raw.githubusercontent.com/LukeSmithxyz/LARBS/master/progs.csv"
+progsfile="lttps://raw.githubusercontent.com/whiz00/installer/master/progs.csv"
 dotfilesrepo="https://github.com/whiz00/Dotfiles"
 aurhelper="yay"
 
