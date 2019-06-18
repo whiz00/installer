@@ -109,7 +109,7 @@ LOGIN_WM=""               # default login session
 NEWUSER="whiz"            # username for the primary user
 USER_PASS="test"          # password for the primary user
 ROOT_PASS="test"          # root password
-HOSTNAME="evolv"          # system hostname
+HOSTNAME="evolve"          # system hostname
 
 INSTALL_WMS="i3-gaps"     # space separated list of chosen wm/de
 # TODO: fix linux-zen, preset files for zen kernel must exist in /etc/mkinitcpio.d/presets/
